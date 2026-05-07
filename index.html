@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>神外量表 | Neurosurg Scales</title>
+  <meta name="description" content="由神经外科临床医生维护的评分量表计算器集合。GCS、Hunt-Hess、ICH Score等量表在线计算，附临床备注与原始文献。">
+  <meta name="keywords" content="神经外科,量表,GCS,Hunt-Hess,ICH Score,临床计算器,neurosurgery,scale,calculator">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a5f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Smooth transitions for scale panels */
+    .scale-panel { display: none; }
+    .scale-panel.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Radio button styling */
+    .scale-option { transition: all 0.15s ease; }
+    .scale-option:hover { background-color: #eff6ff; }
+    .scale-option.selected { background-color: #dbeafe; border-color: #3b82f6; }
+
+    /* Score badge */
+    .score-badge {
+      transition: all 0.3s ease;
+    }
+
+    /* Clinical note toggle */
+    .clinical-note-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .clinical-note-content.open { max-height: 800px; }
+
+    /* Print friendly */
+    @media print {
+      .no-print { display: none !important; }
+      .scale-panel { display: block !important; page-break-after: always; }
+    }
+
+    /* Scroll behavior */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-brand-900 text-white sticky top-0 z-50 shadow-lg">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🧠</span>
+        <div>
+          <h1 class="text-lg font-bold tracking-wide">神外量表</h1>
+          <p class="text-xs text-blue-200">Neurosurgery Clinical Scales</p>
+        </div>
+      </div>
+      <a href="https://github.com/nasated/neurosurg-scales" target="_blank" 
+         class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition no-print">
+        GitHub ↗
+      </a>
+    </div>
+  </header>
+
+  <!-- Scale Navigation Tabs -->
+  <nav class="bg-white border-b sticky top-[60px] z-40 no-print">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex overflow-x-auto gap-1 py-2 -mb-px" id="scale-tabs">
+        <!-- Tabs injected by JS -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-6">
+    <div id="scale-container">
+      <!-- Scale panels injected by JS -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 border-t mt-12 no-print">
+    <div class="max-w-4xl mx-auto px-4 py-6 text-center text-xs text-gray-500">
+      <p>⚠️ 本工具仅供临床参考，不构成诊疗建议。所有临床决策应由有资质的医师根据患者具体情况做出。</p>
+      <p class="mt-2">© 2026 Neurosurg Scales · 由神经外科临床医生维护</p>
+    </div>
+  </footer>
+
+  <script src="scales-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
