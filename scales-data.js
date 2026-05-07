@@ -195,5 +195,194 @@ const SCALES_DATA = [
         ]
       }
     ]
+  },
+
+  // ==================== WFNS ====================
+  {
+    id: 'wfns',
+    name: 'WFNS',
+    fullName: 'WFNS Scale',
+    fullNameCN: '世界神经外科联盟蛛网膜下腔出血分级',
+    description: '基于GCS和运动缺陷的动脉瘤性蛛网膜下腔出血(aSAH)分级，观察者间一致性优于Hunt-Hess',
+    reference: 'Report of World Federation of Neurological Surgeons Committee on a universal subarachnoid hemorrhage grading scale. J Neurosurg. 1988;68(6):985-986.',
+    doi: '10.3171/jns.1988.68.6.0985',
+    clinicalNotes: [
+      '⚡ 仅基于GCS评分和有无运动缺陷，不含主观症状（如头痛程度）',
+      '⚡ 运动缺陷定义为：与出血前相比新出现的偏瘫、单瘫或截瘫',
+      '⚠️ 与Hunt-Hess不同：WFNS不包含头痛、脑膜刺激征等主观指标',
+      '⚠️ 颅神经麻痹（如动眼神经麻痹）不算"运动缺陷"',
+      '📌 I-II级预后良好，建议早期干预（72h内）',
+      '📌 III级存在争议：部分中心积极手术，部分保守治疗',
+      '📌 IV-V级预后差，但积极手术仍有部分患者可获良好预后',
+      '📚 常与Fisher/Modified Fisher联合使用评估血管痉挛风险'
+    ],
+    scoringMode: 'single',
+    resultInterpretation: (score) => {
+      const map = {
+        1: { level: 'I 级', color: 'green', desc: 'GCS 15，无运动缺陷' },
+        2: { level: 'II 级', color: 'green', desc: 'GCS 14-13，无运动缺陷' },
+        3: { level: 'III 级', color: 'yellow', desc: 'GCS 14-13，有运动缺陷' },
+        4: { level: 'IV 级', color: 'orange', desc: 'GCS 12-7，有或无运动缺陷' },
+        5: { level: 'V 级', color: 'red', desc: 'GCS 6-3，有或无运动缺陷' },
+      };
+      return map[score] || { level: '未选择', color: 'gray', desc: '' };
+    },
+    groups: [
+      {
+        name: 'WFNS 分级',
+        items: [
+          { label: 'I 级', value: 1, detail: 'GCS 15，无运动缺陷' },
+          { label: 'II 级', value: 2, detail: 'GCS 14-13，无运动缺陷' },
+          { label: 'III 级', value: 3, detail: 'GCS 14-13，有运动缺陷' },
+          { label: 'IV 级', value: 4, detail: 'GCS 12-7，有或无运动缺陷' },
+          { label: 'V 级', value: 5, detail: 'GCS 6-3，有或无运动缺陷' },
+        ]
+      }
+    ]
+  },
+
+  // ==================== Fisher / Modified Fisher ====================
+  {
+    id: 'fisher',
+    name: 'Fisher',
+    fullName: 'Fisher Scale / Modified Fisher Scale',
+    fullNameCN: 'Fisher分级 / 改良Fisher分级',
+    description: '评估蛛网膜下腔出血(SAH)后脑血管痉挛风险，改良版(Frontera et al.)预测准确性更高',
+    reference: 'Fisher CM, Kistler JP, Davis JM. Relation of cerebral vasospasm to subarachnoid hemorrhage visualized by computerized tomographic scanning. Neurosurgery. 1980;6(1):1-9. / Frontera JA, et al. Prediction of symptomatic vasospasm after subarachnoid hemorrhage: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.',
+    doi: '10.1227/01.NEU.0000285761.22490.0F',
+    clinicalNotes: [
+      '⚡ Fisher分级基于CT上SAH的厚度和分布，不反映临床严重程度',
+      '⚡ Modified Fisher在原始Fisher基础上增加了脑室出血(IVH)的权重',
+      '⚠️ Fisher 1级（无出血）和2级（薄层出血，厚度<1mm）的区分有时较主观',
+      '⚠️ 仅适用于aSAH，不适用于外伤性SAH',
+      '📌 Modified Fisher 3-4级为症状性血管痉挛的高危人群，需加强TCD监测',
+      '📌 血管痉挛风险：Modified Fisher 0级≈6%，1级≈13%，2级≈24%，3级≈33%，4级≈40%',
+      '📌 与Hunt-Hess/WFNS不同：Fisher分级不用于指导手术时机，仅用于预测血管痉挛',
+      '📚 改良版(2006)比原始版(1980)预测症状性血管痉挛的准确性更高'
+    ],
+    scoringMode: 'single',
+    resultInterpretation: (score) => {
+      const map = {
+        0: { level: 'Modified 0 级', color: 'green', desc: '无SAH或IVH' },
+        1: { level: 'Modified 1 级', color: 'green', desc: '薄层SAH（<1mm），无IVH' },
+        2: { level: 'Modified 2 级', color: 'yellow', desc: '薄层SAH（<1mm），伴IVH' },
+        3: { level: 'Modified 3 级', color: 'orange', desc: '厚层SAH（≥1mm），无IVH' },
+        4: { level: 'Modified 4 级', color: 'red', desc: '厚层SAH（≥1mm），伴IVH' },
+      };
+      return map[score] || { level: '未选择', color: 'gray', desc: '' };
+    },
+    groups: [
+      {
+        name: 'Modified Fisher 分级',
+        items: [
+          { label: '0 级', value: 0, detail: '无SAH或IVH（CT未见出血）' },
+          { label: '1 级', value: 1, detail: '薄层SAH（<1mm），无脑室内出血' },
+          { label: '2 级', value: 2, detail: '薄层SAH（<1mm），伴脑室内出血' },
+          { label: '3 级', value: 3, detail: '厚层SAH（≥1mm），无脑室内出血' },
+          { label: '4 级', value: 4, detail: '厚层SAH（≥1mm），伴脑室内出血' },
+        ]
+      }
+    ]
+  },
+
+  // ==================== mRS ====================
+  {
+    id: 'mrs',
+    name: 'mRS',
+    fullName: 'Modified Rankin Scale',
+    fullNameCN: '改良Rankin量表',
+    description: '评估卒中后神经功能预后，是卒中临床试验的标准终点指标，也用于其他神经系统疾病',
+    reference: 'Rankin J. Cerebral vascular accidents in patients over the age of 60. II. Prognosis. Scott Med J. 1957;2(5):200-215. / van Swieten JC, et al. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.',
+    doi: '10.1161/01.STR.19.5.604',
+    clinicalNotes: [
+      '⚡ 评估的是"残疾程度"而非神经功能缺损，强调对日常生活的影响',
+      '⚡ 评估时间点至关重要：发病后90天是卒中研究的标准时间点',
+      '⚡ 评分前需确认患者发病前的功能状态（部分患者发病前已有残疾）',
+      '⚠️ mRS 0-1分通常定义为"功能独立"或"良好预后"（favorable outcome）',
+      '⚠️ 6分（死亡）有时被排除在mRS分析之外，需注明统计方法',
+      '📌 0-2分：功能独立；3-5分：依赖他人；6分：死亡',
+      '📌 评估方式：面对面访谈 > 电话随访 > 病历回顾（准确性递减）',
+      '📚 有结构化访谈工具(mRS-SI)可提高评估一致性'
+    ],
+    scoringMode: 'single',
+    resultInterpretation: (score) => {
+      const map = {
+        0: { level: '0 分', color: 'green', desc: '完全无症状' },
+        1: { level: '1 分', color: 'green', desc: '有症状但无明显残疾，能完成日常活动' },
+        2: { level: '2 分', color: 'yellow', desc: '轻度残疾，不能完成病前所有活动，但无需帮助可自理' },
+        3: { level: '3 分', color: 'orange', desc: '中度残疾，需部分帮助，但可独立行走' },
+        4: { level: '4 分', color: 'red', desc: '中重度残疾，不能独立行走，需他人帮助完成日常生活' },
+        5: { level: '5 分', color: 'red', desc: '重度残疾，卧床不起，大小便失禁，需持续护理' },
+        6: { level: '6 分', color: 'gray', desc: '死亡' },
+      };
+      return map[score] || { level: '未选择', color: 'gray', desc: '' };
+    },
+    groups: [
+      {
+        name: 'mRS 评分',
+        items: [
+          { label: '0 - 完全无症状', value: 0, detail: 'No symptoms at all' },
+          { label: '1 - 有症状但无明显残疾', value: 1, detail: 'No significant disability despite symptoms; able to carry out all usual duties and activities' },
+          { label: '2 - 轻度残疾', value: 2, detail: 'Slight disability; unable to carry out all previous activities, but able to look after own affairs without assistance' },
+          { label: '3 - 中度残疾', value: 3, detail: 'Moderate disability; requiring some help, but able to walk without assistance' },
+          { label: '4 - 中重度残疾', value: 4, detail: 'Moderately severe disability; unable to walk without assistance and unable to attend to own bodily needs without assistance' },
+          { label: '5 - 重度残疾', value: 5, detail: 'Severe disability; bedridden, incontinent and requiring constant nursing care and attention' },
+          { label: '6 - 死亡', value: 6, detail: 'Dead' },
+        ]
+      }
+    ]
+  },
+
+  // ==================== Spetzler-Martin AVM ====================
+  {
+    id: 'spetzler-martin',
+    name: 'S-M AVM',
+    fullName: 'Spetzler-Martin Grading System',
+    fullNameCN: 'Spetzler-Martin 脑动静脉畸形分级',
+    description: '评估脑动静脉畸形(AVM)显微手术切除的风险和难度，指导治疗策略选择',
+    reference: 'Spetzler RF, Martin NA. A proposed grading system for arteriovenous malformations. J Neurosurg. 1986;65(4):476-483.',
+    doi: '10.3171/jns.1986.65.4.0476',
+    clinicalNotes: [
+      '⚡ 总分 = 病灶大小(1-3) + 静脉引流方式(0-1) + 功能区位置(0-1)，范围1-5分',
+      '⚡ 深部静脉引流包括：深静脉系统（大脑内静脉、基底静脉、Galen静脉等）',
+      '⚡ 功能区(Eloquent area)包括：感觉运动皮层、语言区、视觉皮层、丘脑、内囊、脑干、小脑脚、深部核团',
+      '⚠️ 5分（V级）手术致残率极高，通常建议保守治疗或放射外科',
+      '⚠️ 3分（III级）是"分水岭"：部分可手术，部分建议分期或联合治疗',
+      '📌 I-II级：手术风险低，建议显微手术切除',
+      '📌 III级：需个体化评估，可考虑术前栓塞+手术、或分期手术',
+      '📌 IV-V级：手术风险高，首选放射外科（如伽玛刀）或保守观察',
+      '📚 补充评分：Lawton-Young补充分级可进一步提高预后预测准确性'
+    ],
+    scoringMode: 'sum',
+    resultInterpretation: (score) => {
+      if (score <= 2) return { level: `${score} 分`, color: 'green', desc: '低级别，建议手术切除' };
+      if (score === 3) return { level: `${score} 分`, color: 'yellow', desc: '中等级别，需个体化评估' };
+      if (score <= 5) return { level: `${score} 分`, color: 'red', desc: '高级别，手术风险高，考虑替代治疗' };
+      return { level: `${score} 分`, color: 'gray', desc: '' };
+    },
+    groups: [
+      {
+        name: '病灶大小 (Size)',
+        items: [
+          { label: '小型 (< 3 cm)', value: 1, detail: '直径小于3厘米' },
+          { label: '中型 (3-6 cm)', value: 2, detail: '直径3-6厘米' },
+          { label: '大型 (> 6 cm)', value: 3, detail: '直径大于6厘米' },
+        ]
+      },
+      {
+        name: '静脉引流 (Venous Drainage)',
+        items: [
+          { label: '浅表引流', value: 0, detail: '仅引流至浅表静脉系统（上矢状窦、横窦等）' },
+          { label: '深部引流', value: 1, detail: '引流至深部静脉系统（大脑内静脉、Galen静脉等）' },
+        ]
+      },
+      {
+        name: '功能区 (Eloquent Area)',
+        items: [
+          { label: '非功能区', value: 0, detail: '病灶位于非功能区' },
+          { label: '功能区', value: 1, detail: '病灶位于功能区（感觉运动皮层、语言区、视觉皮层、丘脑、内囊、脑干、小脑脚、深部核团）' },
+        ]
+      }
+    ]
   }
 ];
